@@ -44,28 +44,28 @@ const BarChart = () => {
                 response.json()
             .then((data) => {
                 // console.log(data);
-                const labels = data.data.coins.map((coin)=>{
-                    return coin.name;
-                })
-                // console.log(labels);
-                setChart(labels);
+                setChart(data.data.coins);                
             })
             })
             .catch((error)=> {
                 console.log(error);
             })
         }
-        fetchCoins()
+        fetchCoins();
     }, [baseUrl, proxyUrl, apiKey])
 
 
 
 
     var data =  {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        labels: chart.map((ele)=> {
+            return ele.name;
+        }),
         datasets: [{
-            label: '# of Votes',
-            data: [12, 19, 3, 5, 2, 3],
+            label: `${chart.length} Coins Available`,
+            data: chart.map((num)=>{
+                return num.price;
+            }),
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
