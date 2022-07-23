@@ -12,8 +12,16 @@ function DoughnutChart() {
     var proxyUrl = 'https://cors-anywhere.herokuapp.com/';
     var apiKey = "coinranking5c4f074b8a792ad39b71f299f09d71250f58717d9cf30e23";
 
-    useEffect(()=>{
-        fetch(`${proxyUrl}${baseUrl}`)
+    useEffect(()=> {
+    const fetchCoins = async ()=>{
+       await fetch(`${proxyUrl}${baseUrl}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'x-access-token': `${apiKey}`,
+            'Access-Control-Allow-Origin': '*'
+        }
+    })
         .then((response)=>{
             response.json()
         .then((data)=>{
@@ -21,9 +29,25 @@ function DoughnutChart() {
             setChart(data.data.coins);
         })
         })
-        .catch((err)=>console.error(err))
-    
-    },[])
+        .catch((err)=>console.log(err))
+    }
+    fetchCoins();
+    },[baseUrl, proxyUrl, apiKey])
+
+
+    const options = {
+        maintainAspectAspectRatio: false,
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        },
+        Legend: {
+            labels: {
+                fontSize: 26,
+            }
+        }
+    }
 
 
     const data = {
@@ -55,7 +79,7 @@ function DoughnutChart() {
     
     
       return (
-        <Doughnut data={data} />
+        <Doughnut data={data} options={options} />
      )
 }
 
